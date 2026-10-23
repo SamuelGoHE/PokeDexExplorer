@@ -1,4 +1,4 @@
-// CONCEPT: StyleSheet values live in one place so every component looks consistent.
+// CONCEPTO: los valores de StyleSheet viven en un solo lugar para que todo se vea consistente.
 export const colors = {
   background: '#F4F5F7',
   card: '#FFFFFF',

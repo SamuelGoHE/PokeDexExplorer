@@ -1,4 +1,4 @@
-// CONCEPT: padStart adds leading zeros: 25 -> "025". Used to show "#025".
+// CONCEPTO: padStart agrega ceros a la izquierda: 25 -> "025". Se usa para mostrar "#025".
 export function formatId(id) {
   return `#${String(id).padStart(3, '0')}`;
 }

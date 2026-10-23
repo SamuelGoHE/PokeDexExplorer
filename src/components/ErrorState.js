@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, spacing } from '../theme/colors';
 
-// UI state: error (clear message in Spanish + "Reintentar" button)
+// Estado de interfaz: error (mensaje claro + botón "Reintentar")
 export default function ErrorState({ message, onRetry }) {
   return (
     <View style={styles.container}>

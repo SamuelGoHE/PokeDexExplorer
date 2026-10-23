@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { colors, spacing } from '../theme/colors';
 
-// UI state: loading (spinner + text)
+// Estado de interfaz: cargando (indicador + texto)
 export default function LoadingState({ message = 'Cargando Pokémon...' }) {
   return (
     <View style={styles.container}>

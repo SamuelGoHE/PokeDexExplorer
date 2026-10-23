@@ -1,15 +1,17 @@
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ErrorState from '../components/ErrorState';
+import ListFooter from '../components/ListFooter';
 import LoadingState from '../components/LoadingState';
 import PokemonCard from '../components/PokemonCard';
 import { usePokemonList } from '../hooks/usePokemonList';
 import { colors, spacing } from '../theme/colors';
 
 export default function HomeScreen() {
-  const { pokemon, loading, error, retry } = usePokemonList();
+  const { pokemon, loading, error, retry, loadingMore, loadMoreError, loadMore, retryLoadMore } =
+    usePokemonList();
 
-  // The screen has no fetch: it only chooses what to draw for each state.
+  // La pantalla no tiene fetch: solo elige qué dibujar según el estado.
   function renderContent() {
     if (loading) {
       return <LoadingState />;
@@ -18,19 +20,26 @@ export default function HomeScreen() {
       return <ErrorState message={error} onRetry={retry} />;
     }
     return (
-      // CONCEPT: FlatList renders only what is visible (unlike ScrollView + map).
+      // CONCEPTO: FlatList renderiza solo lo visible (a diferencia de ScrollView + map).
       <FlatList
         data={pokemon}
         keyExtractor={(item) => String(item.id)}
         numColumns={2}
         renderItem={({ item }) => <PokemonCard pokemon={item} />}
         contentContainerStyle={styles.list}
+        // CONCEPTO: scroll infinito. onEndReached se dispara al acercarse al final de la lista;
+        // el umbral 0.5 significa "cuando falte media pantalla", así el usuario casi no espera.
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          <ListFooter loadingMore={loadingMore} error={loadMoreError} onRetry={retryLoadMore} />
+        }
       />
     );
   }
 
   return (
-    // CONCEPT: SafeAreaView keeps content away from the notch and system bars.
+    // CONCEPTO: SafeAreaView mantiene el contenido lejos del notch y las barras del sistema.
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>PokéDex Explorer</Text>
       {renderContent()}

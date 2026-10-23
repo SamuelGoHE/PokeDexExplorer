@@ -1,23 +1,30 @@
-import { Image, Pressable, StyleSheet, Text } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, spacing } from '../theme/colors';
 import { capitalize, formatId } from '../utils/format';
 
-// The card only draws; it receives data and a callback through props.
+// La tarjeta solo dibuja: recibe los datos y el callback por props.
 export default function PokemonCard({ pokemon, onPress }) {
   return (
-    <Pressable style={styles.card} onPress={() => onPress?.(pokemon)}>
-      {/* CONCEPT: a remote Image needs explicit width and height or it is not visible. */}
-      <Image source={{ uri: pokemon.image }} style={styles.image} resizeMode="contain" />
-      <Text style={styles.id}>{formatId(pokemon.id)}</Text>
-      <Text style={styles.name}>{capitalize(pokemon.name)}</Text>
+    // El contenedor ocupa exactamente la mitad de la fila, así una tarjeta suelta
+    // (número impar en la última fila) no se estira a todo el ancho.
+    <Pressable style={styles.slot} onPress={() => onPress?.(pokemon)}>
+      <View style={styles.card}>
+        {/* CONCEPTO: una Image remota necesita width y height explícitos o no se ve. */}
+        <Image source={{ uri: pokemon.image }} style={styles.image} resizeMode="contain" />
+        <Text style={styles.id}>{formatId(pokemon.id)}</Text>
+        <Text style={styles.name}>{capitalize(pokemon.name)}</Text>
+      </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
+  slot: {
+    width: '50%',
+    padding: spacing.sm,
+  },
   card: {
     flex: 1,
-    margin: spacing.sm,
     padding: spacing.md,
     alignItems: 'center',
     backgroundColor: colors.card,
