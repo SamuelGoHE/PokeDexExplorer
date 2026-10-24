@@ -59,9 +59,13 @@ export async function getPokemonList(limit = 20, offset = 0, signal) {
 // Cualquier otro fallo lanza un Error (estado "error" en la interfaz).
 export async function getPokemon(nameOrId, signal) {
   // La búsqueda ignora mayúsculas y los espacios al inicio o al final.
-  const query = String(nameOrId).trim().toLowerCase();
+  let query = String(nameOrId).trim().toLowerCase();
   if (!query) {
     return null;
+  }
+  // Un número puede venir como "25", "025" o "#025": se normaliza a "25", que es lo que acepta la API.
+  if (/^#?\d+$/.test(query)) {
+    query = String(Number(query.replace('#', '')));
   }
   const url = `${BASE_URL}/pokemon/${encodeURIComponent(query)}`;
   const response = await fetch(url, { signal });
