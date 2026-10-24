@@ -11,7 +11,7 @@ import { usePokemonList } from '../hooks/usePokemonList';
 import { usePokemonSearch } from '../hooks/usePokemonSearch';
 import { colors, spacing } from '../theme/colors';
 
-export default function HomeScreen() {
+export default function HomeScreen({ onSelect }) {
   const list = usePokemonList();
   const search = usePokemonSearch();
   // Lo que el usuario escribe en el input. No dispara nada hasta pulsar "Buscar".
@@ -35,7 +35,7 @@ export default function HomeScreen() {
     }
     return (
       <View style={styles.result}>
-        <PokemonCard pokemon={search.result} />
+        <PokemonCard pokemon={search.result} onPress={(item) => onSelect(item.id)} />
       </View>
     );
   }
@@ -53,7 +53,7 @@ export default function HomeScreen() {
         data={list.pokemon}
         keyExtractor={(item) => String(item.id)}
         numColumns={2}
-        renderItem={({ item }) => <PokemonCard pokemon={item} />}
+        renderItem={({ item }) => <PokemonCard pokemon={item} onPress={(p) => onSelect(p.id)} />}
         contentContainerStyle={styles.list}
         // CONCEPTO: scroll infinito. onEndReached se dispara al acercarse al final de la lista;
         // el umbral 0.5 significa "cuando falte media pantalla", así el usuario casi no espera.
